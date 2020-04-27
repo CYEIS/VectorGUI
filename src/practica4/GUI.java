@@ -6,6 +6,8 @@
 package practica4;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.Vector;
@@ -320,7 +322,6 @@ public class GUI extends javax.swing.JFrame {
         return true;
     }
 
-
     private void btnguardarVectorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnguardarVectorMouseClicked
         // TODO add your handling code here:
         int sizeVector = Integer.parseInt(txtsizeVector.getText());
@@ -342,7 +343,7 @@ public class GUI extends javax.swing.JFrame {
             this.txtPosA.setText(String.valueOf(""));
             this.txtPosB.setText(String.valueOf(""));
         } else {
-            
+
             int posA = Integer.parseInt(txtPosA.getText());
             int posB = Integer.parseInt(txtPosB.getText());
             Integer aux1 = (Integer) arregloNumeros.get(posA - 1);
@@ -355,15 +356,12 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnInterCambiarMouseClicked
 
     private void sincronizarTabla() {
-
         DefaultTableModel model = (DefaultTableModel) vector2DArray.getModel();
         model.getDataVector().removeAllElements();
         for (int i = 0; i < arregloNumeros.size(); i++) {
             Object elemento = arregloNumeros.get(i);
-
             int posicion = i + 1;
             model.addRow(new Object[]{posicion, elemento});
-
         }
     }
 
@@ -371,19 +369,8 @@ public class GUI extends javax.swing.JFrame {
 
     private void btnInvertirVectorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInvertirVectorMouseClicked
         // TODO add your handling code here:
-        int sizeVector = Integer.parseInt(txtsizeVector.getText());
-        DefaultTableModel model = (DefaultTableModel) vector2DArray.getModel();
-
-        for (int i = 0; i < sizeVector; i++) {
-
-            Vector fila1 = (Vector) model.getDataVector().get(i);
-
-            Integer aux1 = (Integer) fila1.get(1);
-
-            arregloNumeros.add(sizeVector, aux1);
-
-        }
-
+        Collections.reverse(arregloNumeros);
+        sincronizarTabla();
 
     }//GEN-LAST:event_btnInvertirVectorMouseClicked
 
@@ -396,22 +383,38 @@ public class GUI extends javax.swing.JFrame {
 
     private void btnCambiarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCambiarMouseClicked
         // TODO add your handling code here:
-        AbstractButton abstractButton = (AbstractButton) evt.getSource();
-        boolean selected = abstractButton.getModel().isSelected();
+
+        boolean selected = checkManual.isSelected();
         if (selected) {
             if (txtDatoCambiar.getText().equals("") || !esNumero(txtDatoCambiar.getText())) {
                 JOptionPane.showMessageDialog(null, "SEÑOR USUARIO POR FAVOR INGRESE UN DATO NUMERICO ANTES DE INICIAR");
                 this.txtDatoCambiar.setText(String.valueOf(""));
             } else {
+                int sizeVector = Integer.parseInt(txtsizeVector.getText());
                 int pos = Integer.parseInt(txtposCambiar.getText());
-                int datoCambiar = Integer.parseInt(txtDatoCambiar.getText());
-                arregloNumeros.set(pos - 1, datoCambiar);
-                System.out.println(pos);
-                System.out.println(datoCambiar);
+
+                if (pos > sizeVector) {
+                    JOptionPane.showMessageDialog(null, "SEÑOR USUARIO, POR FAVOR INGRESE UNA NUMERO MENOR AL TAMANO DEL VECTOR");
+                    this.txtposCambiar.setText(String.valueOf(""));
+                } else {
+                    int datoCambiar = Integer.parseInt(txtDatoCambiar.getText());
+                    arregloNumeros.set(pos - 1, datoCambiar);
+                    sincronizarTabla();
+                }
+            }
+
+        } else {    //ACA SE DEBE GENERAR EL ALEATORIO
+            if (txtposCambiar.getText().equals("") || !esNumero(txtposCambiar.getText())) {
+                JOptionPane.showMessageDialog(null, "SEÑOR USUARIO POR FAVOR INGRESE UN DATO NUMERICO ANTES DE INICIAR");
+                this.txtposCambiar.setText(String.valueOf(""));
+            } else {
+                Random aleatorio = new Random();
+                int numeroAleatorio = aleatorio.nextInt(1000);
+                int sizeVector = Integer.parseInt(txtsizeVector.getText());
+                int pos = Integer.parseInt(txtposCambiar.getText());
+                arregloNumeros.set(pos - 1, numeroAleatorio);
                 sincronizarTabla();
             }
-            
-        } else {
 
         }
 
