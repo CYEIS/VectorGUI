@@ -104,6 +104,8 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
+        jLabel3.setFont(new java.awt.Font("Lucida Grande", 3, 13)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(0, 0, 255));
         jLabel3.setText("Si desea inter-cambiar posiciones del Vector :");
 
         jLabel4.setText("Posición A :");
@@ -118,11 +120,12 @@ public class GUI extends javax.swing.JFrame {
         });
 
         jLabel6.setFont(new java.awt.Font("Lucida Grande", 3, 13)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(0, 102, 102));
+        jLabel6.setForeground(new java.awt.Color(0, 0, 255));
         jLabel6.setText("Si desea cambiar algun elemento en determinada posicion :  ");
 
         jLabel7.setText("Posición a Cambiar :");
 
+        jLabel8.setFont(new java.awt.Font("Lucida Grande", 3, 12)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 0, 0));
         jLabel8.setText("Como desea agregar el dato? ");
 
