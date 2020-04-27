@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
+ * Interface de Usuario
  *
  * @author cristianyeis
  */
@@ -24,10 +25,17 @@ public class GUI extends javax.swing.JFrame {
     public List<Object> arregloNumeros = new ArrayList<>();
 
     /**
-     * Creates new form GUI
+     * Creates new form GUI Inicializa todos lo componentes.
      */
     public GUI() {
         initComponents();
+        
+        btnInvertirVector.setVisible(false);
+        btnguardarVector.setVisible(false);
+        btnCambiar.setVisible(false);
+        btnInterCambiar.setVisible(false);
+        checkManual.setVisible(false);
+        
     }
 
     /**
@@ -266,8 +274,20 @@ public class GUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Metodo para crear Vector segun especifique el usuario
+     *
+     * @param evt Al dar click sobre el Boton CrearVector ejecuta las acciones
+     * internar
+     */
     private void btncrearVectorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btncrearVectorMouseClicked
         // TODO add your handling code here:
+        btnInvertirVector.setVisible(true);
+        btnguardarVector.setVisible(true);
+        btnCambiar.setVisible(true);
+        btnInterCambiar.setVisible(true);
+        checkManual.setVisible(true);
+        
         if (txtsizeVector.getText().equals("") || !esNumero(txtsizeVector.getText())) {
             JOptionPane.showMessageDialog(null, "SEÑOR USUARIO POR FAVOR INGRESE UN NUMERO ANTES DE INICIAR");
             this.txtsizeVector.setText(String.valueOf(""));
@@ -288,20 +308,10 @@ public class GUI extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btncrearVectorMouseClicked
-    /*
-    public Object[][] getTableData(JTable table) {
-        DefaultTableModel dtm = (DefaultTableModel) table.getModel();
-        int nRow = dtm.getRowCount(), nCol = dtm.getColumnCount();
-        Object[][] tableData = new Object[nRow][nCol];
-        for (int i = 0; i < nRow; i++) {
-            for (int j = 0; j < nCol; j++) {
-                tableData[i][j] = dtm.getValueAt(i, j);
-            }
-        }
-        return tableData;
-    }
-     */
 
+    /**
+     * Metodo para intercambiar 2 posiciones del arreglo.
+     */
     private void interCambiarPos() {
         int posA = Integer.parseInt(txtPosA.getText());
         int posB = Integer.parseInt(txtPosA.getText());
@@ -316,6 +326,12 @@ public class GUI extends javax.swing.JFrame {
         arregloNumeros.add(posB, aux2);
     }
 
+    /**
+     * Metodo para determinar si un dato es del tipo Numerico
+     *
+     * @param numero se le da un dato y retorno "true" si es Numerico.
+     * @return "true" si es Numerico el dato numero.
+     */
     public boolean esNumero(String numero) {
         for (int i = 0; i < numero.length(); i++) {
             if (!Character.isDigit(numero.charAt(i))) {
@@ -325,6 +341,12 @@ public class GUI extends javax.swing.JFrame {
         return true;
     }
 
+    /**
+     * Metodo para guardar los cambios en un Vector desde una JTable
+     *
+     * @param evt al dar click sobre el boton guardarVector sobre escribe los
+     * datos ingresados por el usuario.
+     */
     private void btnguardarVectorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnguardarVectorMouseClicked
         // TODO add your handling code here:
         int sizeVector = Integer.parseInt(txtsizeVector.getText());
@@ -339,6 +361,13 @@ public class GUI extends javax.swing.JFrame {
         System.out.println(arregloNumeros); //Verficar que si guarde bien el vector con los cambios que haga el usuario
     }//GEN-LAST:event_btnguardarVectorMouseClicked
 
+    /**
+     * Metodo para cambiar un dato dado por el usuario o generado aleatoriamente
+     * y escrito en el arreglo.
+     *
+     * @param evt al dar click sobre el boton cambiarVector sobre escribe los
+     * datos ingresados por el usuario.
+     */
     private void btnInterCambiarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInterCambiarMouseClicked
         // TODO add your handling code here:
         if (txtPosA.getText().equals("") || !esNumero(txtPosA.getText()) || txtPosB.getText().equals("") || !esNumero(txtPosB.getText())) {
@@ -346,18 +375,27 @@ public class GUI extends javax.swing.JFrame {
             this.txtPosA.setText(String.valueOf(""));
             this.txtPosB.setText(String.valueOf(""));
         } else {
-
+            int sizeVector = Integer.parseInt(txtsizeVector.getText());
             int posA = Integer.parseInt(txtPosA.getText());
             int posB = Integer.parseInt(txtPosB.getText());
-            Integer aux1 = (Integer) arregloNumeros.get(posA - 1);
-            Integer aux2 = (Integer) arregloNumeros.get(posB - 1);
-            arregloNumeros.set(posA - 1, aux2);
-            arregloNumeros.set(posB - 1, aux1);
-            sincronizarTabla();
-        }
 
+            if ((posA > sizeVector) || (posB > sizeVector)) {
+                JOptionPane.showMessageDialog(null, "SEÑOR USUARIO, POR FAVOR INGRESE UN NUMERO MENOR AL TAMANO DEL VECTOR");
+                this.txtPosA.setText(String.valueOf(""));
+                this.txtPosB.setText(String.valueOf(""));
+            } else {
+                Integer aux1 = (Integer) arregloNumeros.get(posA - 1);
+                Integer aux2 = (Integer) arregloNumeros.get(posB - 1);
+                arregloNumeros.set(posA - 1, aux2);
+                arregloNumeros.set(posB - 1, aux1);
+                sincronizarTabla();
+            }
+        }
     }//GEN-LAST:event_btnInterCambiarMouseClicked
 
+    /**
+     * Metodo para sincronizar la Tabla de JFrame Form con los cambios elusuario desee realizar.
+     */
     private void sincronizarTabla() {
         DefaultTableModel model = (DefaultTableModel) vector2DArray.getModel();
         model.getDataVector().removeAllElements();
@@ -368,15 +406,26 @@ public class GUI extends javax.swing.JFrame {
         }
     }
 
-    // falta este 
-
+    /**
+     * Metodo que invierte las posiciones del vector existente en la JTable
+     *
+     * @param evt al dar click sobre el boton invertirVector cambia todas las
+     * posiciones de los elementos del Vector en la JTable.
+     */
     private void btnInvertirVectorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInvertirVectorMouseClicked
-        // TODO add your handling code here:
+
         Collections.reverse(arregloNumeros);
         sincronizarTabla();
 
     }//GEN-LAST:event_btnInvertirVectorMouseClicked
 
+    /**
+     * Metodo que habilita el ingreso manual del dato que se desea cambiar en
+     * una posicion dada por el usuario.
+     *
+     * @param evt al selecionar el check "checkManueal" habita el ingreso del
+     * dato manualmente.
+     */
     private void checkManualStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_checkManualStateChanged
         // TODO add your handling code here:
         AbstractButton abstractButton = (AbstractButton) evt.getSource();
@@ -384,6 +433,12 @@ public class GUI extends javax.swing.JFrame {
         txtDatoCambiar.setEnabled(selected);
     }//GEN-LAST:event_checkManualStateChanged
 
+    /**
+     * Metodo que cambiar el elemento de una posicion dada por el usuario
+     *
+     * @param evt al selecionar el boton "Cambiar" habita el ingreso del dato
+     * manualmente.
+     */
     private void btnCambiarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCambiarMouseClicked
         // TODO add your handling code here:
 
@@ -397,7 +452,7 @@ public class GUI extends javax.swing.JFrame {
                 int pos = Integer.parseInt(txtposCambiar.getText());
 
                 if (pos > sizeVector) {
-                    JOptionPane.showMessageDialog(null, "SEÑOR USUARIO, POR FAVOR INGRESE UNA NUMERO MENOR AL TAMANO DEL VECTOR");
+                    JOptionPane.showMessageDialog(null, "SEÑOR USUARIO, POR FAVOR INGRESE UN NUMERO MENOR AL TAMANO DEL VECTOR");
                     this.txtposCambiar.setText(String.valueOf(""));
                 } else {
                     int datoCambiar = Integer.parseInt(txtDatoCambiar.getText());
@@ -405,7 +460,6 @@ public class GUI extends javax.swing.JFrame {
                     sincronizarTabla();
                 }
             }
-
         } else {    //ACA SE DEBE GENERAR EL ALEATORIO
             if (txtposCambiar.getText().equals("") || !esNumero(txtposCambiar.getText())) {
                 JOptionPane.showMessageDialog(null, "SEÑOR USUARIO POR FAVOR INGRESE UN DATO NUMERICO ANTES DE INICIAR");
@@ -418,11 +472,13 @@ public class GUI extends javax.swing.JFrame {
                 arregloNumeros.set(pos - 1, numeroAleatorio);
                 sincronizarTabla();
             }
-
         }
-
     }//GEN-LAST:event_btnCambiarMouseClicked
 
+    /**
+     * Metodo para llenar JTable (vector2DArray) con datos enternos y aleatorios
+     * hasta el 1000.
+     */
     private void fillTable() {
         int sizeVector = Integer.parseInt(txtsizeVector.getText());
         Random aleatorio = new Random();
@@ -436,6 +492,10 @@ public class GUI extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Metodo para llenar JTable (vector2DArray) con datos Manueales por el
+     * usuario y los que NO los llena con ceros "0".
+     */
     private void manualFillTable() {
         int sizeVector = Integer.parseInt(txtsizeVector.getText());
         for (int i = 0; i < sizeVector; i++) {
