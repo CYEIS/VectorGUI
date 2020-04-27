@@ -18,11 +18,7 @@ public class Practica4 {
         
         GUI userInterface = new GUI();
         userInterface.setVisible(true);
-       
-        System.out.println("CYEIS");
 
-        
-        
     }
     
 }

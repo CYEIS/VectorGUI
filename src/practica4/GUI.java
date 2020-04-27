@@ -7,6 +7,9 @@ package practica4;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -61,6 +64,11 @@ public class GUI extends javax.swing.JFrame {
         jLabel1.setText("Ingrese el tamaño del Vector que desea Crear :");
 
         btncrearVector.setText("CrearVector");
+        btncrearVector.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btncrearVectorMouseClicked(evt);
+            }
+        });
 
         vector2DArray.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -83,6 +91,11 @@ public class GUI extends javax.swing.JFrame {
         jLabel2.setText("PRACTICA #4 LAB. LÓGICA & REPRESENTACIÓN I");
 
         btnguardarVector.setText("Guardar_Vector");
+        btnguardarVector.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnguardarVectorMouseClicked(evt);
+            }
+        });
 
         jLabel3.setText("Si desea inter-cambiar posiciones del Vector :");
 
@@ -197,10 +210,78 @@ public class GUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btncrearVectorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btncrearVectorMouseClicked
+        // TODO add your handling code here:
+         if (txtsizeVector.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "SEÑOR USUARIO POR FAVOR INGRESE NUMERO ANTES DE INICIAR");
+         } else {
+            
+            int input = JOptionPane.showConfirmDialog(this, "Desea un vector aleatorio");
+            switch(input){
+            case JOptionPane.YES_OPTION:
+//                JOptionPane.showMessageDialog(null, "Si");
+                fillTable();
+                break;
+            case JOptionPane.NO_OPTION:
+//                JOptionPane.showMessageDialog(null, "No");
+                manualFillTable();
+                break;
+            default:
+//                JOptionPane.showMessageDialog(null, "Cancelada"
+
+            }
+        }   
+    }//GEN-LAST:event_btncrearVectorMouseClicked
+
+    private void btnguardarVectorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnguardarVectorMouseClicked
+        // TODO add your handling code here:
+        
+        int sizeVector = Integer.parseInt(txtsizeVector.getText());
+            Random aleatorio = new Random();
+            DefaultTableModel model = (DefaultTableModel) vector2DArray.getModel();
+            
+            for (int i = 0; i < sizeVector; i++) {
+              //  Object[] fila = model.getDataVector().elementAt(i);
+                
+                int numeroAleatorio = aleatorio.nextInt(1000);
+                int posicion=i+1;
+                model.addRow(new Object[]{posicion, numeroAleatorio});
+                arregloNumeros.add(numeroAleatorio);
+            }
+        
+        
+    }//GEN-LAST:event_btnguardarVectorMouseClicked
+
+    private void fillTable(){
+        
+        int sizeVector = Integer.parseInt(txtsizeVector.getText());
+            Random aleatorio = new Random();
+            DefaultTableModel model = (DefaultTableModel) vector2DArray.getModel();
+            model.getDataVector().removeAllElements();
+            for (int i = 0; i < sizeVector; i++) {
+                int numeroAleatorio = aleatorio.nextInt(1000);
+                int posicion=i+1;
+                model.addRow(new Object[]{posicion, numeroAleatorio});
+                arregloNumeros.add(numeroAleatorio);
+            }
+            
+    }
 
     
-    
-    
+    private void manualFillTable(){
+        
+        int sizeVector = Integer.parseInt(txtsizeVector.getText());
+            
+            for (int i = 0; i < sizeVector; i++) {
+                int posicion=i+1;
+                DefaultTableModel model = (DefaultTableModel) vector2DArray.getModel();
+                model.addRow(new Object[]{posicion,""});
+                arregloNumeros.add("");
+            }
+      
+    }
+        
+        
     
     /**
      * @param args the command line arguments
